@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgpool
+  namespace: myproject
+  labels:
+    cluster-name: postgresql-cluster
+    node-name: pgpool
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      cluster-name: postgresql-cluster
+      node-name: pgpool
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        cluster-name: postgresql-cluster
+        node-name: pgpool
+    spec:
+      containers:
+      - image: mcyprian/pgpool-fedora30:latest
+        command: ["pgpool", "-n"]
+        name: pgpool
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9999
+          name: pgpool
+          protocol: TCP
+        #livenessProbe:
+        #  exec:
+        #    command:
+        #    - /usr/libexec/check-container
+        #  failureThreshold: 3
+        #  initialDelaySeconds: 60
+        #  periodSeconds: 10
+        #  successThreshold: 1
+        #  timeoutSeconds: 10
+        #readinessProbe:
+        #  exec:
+        #    command:
+        #    - /usr/libexec/check-container
+        #  failureThreshold: 3
+        #  initialDelaySeconds: 10
+        #  periodSeconds: 5
+        #  successThreshold: 1
+        #  timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: "600m"
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 500M
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
