@@ -24,13 +24,22 @@ spec:
     spec:
       containers:
       - image: mcyprian/pgpool-fedora30:latest
-        command: ["pgpool", "-n"]
+        command: ["run-pgpool", "-n"]
         name: pgpool
         imagePullPolicy: Always
         ports:
         - containerPort: 9999
           name: pgpool
           protocol: TCP
+        env:
+        - name: POSTGRESQL_USER
+          value: user
+        - name: POSTGRESQL_PASSWORD
+          value: passwd
+        - name: POSTGRESQL_DATABASE
+          value: db
+        restartPolicy: Always
+        terminationGracePeriodSeconds: 30
         #livenessProbe:
         #  exec:
         #    command:
@@ -56,5 +65,4 @@ spec:
           requests:
             cpu: 100m
             memory: 500M
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+

@@ -53,4 +53,4 @@ USER 26
 RUN cp /etc/pgpool-II-template/* /etc/pgpool-II/
 
 ENTRYPOINT ["container-entrypoint"]
-CMD ["pgpool", "-n"]
+CMD ["run-pgpool", "-n"]

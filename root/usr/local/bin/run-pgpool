@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+set -eu
+
+echo "$POSTGRESQL_USER:$POSTGRESQL_PASSWORD" > /etc/pgpool-II/pool_passwd
+
+exec pgpool "$@"
