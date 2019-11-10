@@ -7,9 +7,9 @@ metadata:
     cluster-name: postgresql-cluster
     node-name: pgpool
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
   selector:
     matchLabels:
       cluster-name: postgresql-cluster
@@ -35,9 +35,10 @@ spec:
         - name: POSTGRESQL_USER
           value: user
         - name: POSTGRESQL_PASSWORD
-          value: passwd
-        - name: POSTGRESQL_DATABASE
-          value: db
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: database-password
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
         #livenessProbe:
@@ -61,8 +62,7 @@ spec:
         resources:
           limits:
             cpu: "600m"
-            memory: 1Gi
+            memory: 500M
           requests:
             cpu: 100m
-            memory: 500M
-
+            memory: 250M
