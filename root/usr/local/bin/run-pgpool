@@ -2,6 +2,6 @@
 
 set -eu
 
-echo "$POSTGRESQL_USER:$POSTGRESQL_PASSWORD" > /etc/pgpool-II/pool_passwd
+pg_md5 -m -f /etc/pgpool-II/pgpool.conf -u "$POSTGRESQL_USER" "$POSTGRESQL_PASSWORD"
 
 exec pgpool "$@"
