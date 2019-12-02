@@ -4,22 +4,19 @@ metadata:
   name: pgpool
   namespace: myproject
   labels:
-    cluster-name: postgresql-cluster
     node-name: pgpool
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      cluster-name: postgresql-cluster
       node-name: pgpool
   progressDeadlineSeconds: 600
   revisionHistoryLimit: 10
   template:
     metadata:
       labels:
-        cluster-name: postgresql-cluster
         node-name: pgpool
     spec:
       containers:
@@ -37,31 +34,13 @@ spec:
         - name: POSTGRESQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgresql
+              name: postgresql-cluster
               key: database-password
         restartPolicy: Always
         terminationGracePeriodSeconds: 30
-        #livenessProbe:
-        #  exec:
-        #    command:
-        #    - /usr/libexec/check-container
-        #  failureThreshold: 3
-        #  initialDelaySeconds: 60
-        #  periodSeconds: 10
-        #  successThreshold: 1
-        #  timeoutSeconds: 10
-        #readinessProbe:
-        #  exec:
-        #    command:
-        #    - /usr/libexec/check-container
-        #  failureThreshold: 3
-        #  initialDelaySeconds: 10
-        #  periodSeconds: 5
-        #  successThreshold: 1
-        #  timeoutSeconds: 10
         resources:
           limits:
-            cpu: "600m"
+            cpu: 600m
             memory: 500M
           requests:
             cpu: 100m

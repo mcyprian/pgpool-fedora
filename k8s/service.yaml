@@ -4,11 +4,9 @@ metadata:
   name: pgpool
   namespace: myproject
   labels:
-    cluster-name: postgresql-cluster
     node-name: pgpool
 spec:
   selector:
-    cluster-name: postgresql-cluster
     node-name: pgpool
   ports:
   - port: 9999
